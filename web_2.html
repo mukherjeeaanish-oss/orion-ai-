@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orion AI - Training & Upskilling</title>
+    <style>
+        /* Base Styles & Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Top Right Help Icon */
+        .help-icon {
+            position: fixed;
+            top: 25px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #64ffda;
+            color: #0a192f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 900;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .help-icon:hover {
+            transform: scale(1.1);
+            background: #fff;
+        }
+
+        /* Header & Hero Section */
+        header {
+            background: linear-gradient(rgba(10, 25, 47, 0.8), rgba(10, 25, 47, 0.9)), 
+                        url('https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1920&q=80') center/cover;
+            color: #fff;
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            color: #64ffda;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Tabs Navigation */
+        .tab-container {
+            max-width: 1200px;
+            margin: -30px auto 40px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-wrap: wrap;
+            overflow: hidden;
+            position: relative;
+            z-index: 10;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 20px;
+            border: none;
+            background: #fff;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #555;
+            transition: all 0.3s ease;
+            border-bottom: 4px solid transparent;
+        }
+
+        .tab-btn:hover {
+            background: #f0f4f8;
+            color: #0a192f;
+        }
+
+        .tab-btn.active {
+            color: #0a192f;
+            border-bottom: 4px solid #64ffda;
+            background: #fafcfc;
+        }
+
+        /* Tab Content Area */
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            padding: 0 20px;
+            min-height: 50vh; 
+        }
+
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s forwards;
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .tab-content.active {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tab-text { flex: 1; }
+        .tab-text h2 { color: #0a192f; margin-bottom: 10px; font-size: 2rem; }
+        .tab-text h3 { color: #117b62; margin-bottom: 20px; font-weight: 500; }
+        
+        .pitch-box {
+            background: #eef2f5;
+            border-left: 4px solid #0a192f;
+            padding: 20px;
+            margin-top: 25px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .pitch-box h4 { color: #0a192f; margin-bottom: 8px; }
+        
+        .tab-img {
+            flex: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .tab-img img { width: 100%; height: auto; display: block; }
+
+        /* Slide-out Help Panel */
+        .help-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .help-panel {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 600px;
+            height: 100vh;
+            background: #f4f7f6;
+            z-index: 1001;
+            overflow-y: auto;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+            transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .close-panel {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background: #0a192f;
+            color: #fff;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1002;
+            transition: background 0.3s;
+        }
+
+        .close-panel:hover { background: #ff4d4d; }
+
+        .panel-content { padding: 60px 30px 40px; }
+
+        /* FAQ inside Panel */
+        .faq-section { margin-bottom: 50px; }
+        .section-title {
+            font-size: 2rem;
+            color: #0a192f;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #64ffda;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .faq-item {
+            background: #fff;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .faq-question {
+            padding: 15px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #0a192f;
+        }
+
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 0 20px 20px;
+            max-height: 300px;
+        }
+
+        /* Form inside Panel */
+        .enroll-form {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group { display: flex; flex-direction: column; }
+        label { margin-bottom: 5px; font-weight: 600; color: #333; font-size: 0.9rem;}
+        
+        input, select, textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+            width: 100%;
+        }
+
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #64ffda; }
+
+        button.submit-btn {
+            background: #0a192f;
+            color: #64ffda;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        button.submit-btn:hover { background: #112240; }
+
+        /* Thank You Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 50px;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 500px;
+            margin: 0 20px;
+            position: relative;
+            z-index: 2001;
+        }
+
+        .modal-content h2 { color: #0a192f; margin-bottom: 15px; }
+
+        .close-modal {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #64ffda;
+            color: #0a192f;
+            border: none;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Flying Stars Animation */
+        .star-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 3000;
+            font-size: 24px;
+            animation: flyStar ease-out forwards;
+        }
+
+        @keyframes flyStar {
+            0% {
+                transform: translate(0, 0) scale(0.5) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(1.5) rotate(var(--rot));
+                opacity: 0;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background: #0a192f;
+            color: #a8b2d1;
+            text-align: center;
+            padding: 50px 20px;
+            margin-top: 20px;
+        }
+
+        .slogan { font-size: 1.5rem; color: #64ffda; margin-bottom: 30px; font-weight: 600; }
+        .contact-info p { margin-bottom: 10px; }
+        .contact-info strong { color: #fff; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .tab-content.active { flex-direction: column; }
+            .tab-btn { flex: 1 1 50%; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Help Icon -->
+    <div class="help-icon" onclick="openHelpPanel()" title="Ask a Question / Enroll">?</div>
+
+    <!-- Header / Hero -->
+    <header>
+        <h1>Orion AI</h1>
+        <p>Transforming individuals and organizations through cutting-edge tech training and digital upskilling.</p>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="tab-container">
+        <button class="tab-btn active" onclick="openTab(event, 'tab1')">AI Mastery</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab2')">Data Literacy</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab3')">Modern Sales</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab4')">Custom LMS</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab5')">Digital Marketing</button>
+    </div>
+
+    <!-- Tab Contents -->
+    <main class="content-container">
+        <!-- Tab 1: AI Mastery -->
+        <div id="tab1" class="tab-content active">
+            <div class="tab-text">
+                <h2>AI Mastery Program</h2>
+                <h3>AI-Ready in 30 Days.</h3>
+                <p>Learn to integrate ChatGPT, GitHub Copilot, and custom AI tools into your daily workflow. Our comprehensive workshops are designed to double your daily productivity fast by automating routine tasks and enhancing creative problem-solving.</p>
+                <div class="pitch-box">
+                    <h4>Client Pitch Strategy</h4>
+                    <p><strong>The Hook:</strong> "How much time is your team losing to repetitive tasks?"<br>
+                    <strong>The Value:</strong> Position this as a time-multiplier. Pitch to executives that this isn't just a software tutorial; it's a structural upgrade to their workforce's efficiency.</p>
+                </div>
+            </div>
+            <div class="tab-img">
+                <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=600&q=80" alt="AI Technology Visualization">
+            </div>
+        </div>
+
+        <!-- Tab 2: Data Literacy -->
+        <div id="tab2" class="tab-content">
+            <div class="tab-text">
+                <h2>Data Literacy</h2>
+                <h3>Everyone Reads Data.</h3>
+                <p>From foundational Excel skills to advanced Power BI dashboards, we ensure that every employee can speak the language of numbers within 8 weeks. Stop guessing and start making data-backed decisions at every tier of management.</p>
+                <div class="pitch-box">
+                    <h4>Client Pitch Strategy</h4>
+                    <p><strong>The Hook:</strong> "Data is useless if your team can't read it."<br>
+                    <strong>The Value:</strong> Pitch this to HR and Operations heads as risk mitigation. Explain that democratizing data prevents bottlenecks where only the IT or Analytics teams understand business health.</p>
+                </div>
+            </div>
+            <div class="tab-img">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" alt="Data Analytics Dashboard">
+            </div>
+        </div>
+
+        <!-- Tab 3: Modern Sales Training -->
+        <div id="tab3" class="tab-content">
+            <div class="tab-text">
+                <h2>Modern Sales Training</h2>
+                <h3>High Close Rate.</h3>
+                <p>Master advanced sales techniques tailored for the digital-first economy. Our curriculum covers complex objection handling, AI-assisted lead scoring, and virtual closing tactics that turn cold prospects into long-term clients.</p>
+                <div class="pitch-box">
+                    <h4>Client Pitch Strategy</h4>
+                    <p><strong>The Hook:</strong> "The buyer journey has changed; has your sales playbook?"<br>
+                    <strong>The Value:</strong> Appeal directly to Sales Directors/CROs. Emphasize that traditional sales tactics fall flat in Zoom rooms. Pitch this as an immediate revenue-generating investment.</p>
+                </div>
+            </div>
+            <div class="tab-img">
+                <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=600&q=80" alt="Business Meeting Sales">
+            </div>
+        </div>
+
+        <!-- Tab 4: Custom LMS -->
+        <div id="tab4" class="tab-content">
+            <div class="tab-text">
+                <h2>Custom LMS</h2>
+                <h3>Your Academy. Branded.</h3>
+                <p>Launch a white-label learning platform configured for your organization. Host your proprietary courses, issue custom certifications, and monitor real-time progress tracking to ensure compliance and skill development.</p>
+                <div class="pitch-box">
+                    <h4>Client Pitch Strategy</h4>
+                    <p><strong>The Hook:</strong> "Why rent a classroom when you can own the academy?"<br>
+                    <strong>The Value:</strong> Pitch to enterprise clients and HR leaders focusing on onboarding and compliance. Highlight the premium feel of a white-labeled platform.</p>
+                </div>
+            </div>
+            <div class="tab-img">
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80" alt="E-learning Computer Platform">
+            </div>
+        </div>
+
+        <!-- Tab 5: Digital Marketing -->
+        <div id="tab5" class="tab-content">
+            <div class="tab-text">
+                <h2>Digital Marketing</h2>
+                <h3>Grow Your Own Team.</h3>
+                <p>Build your in-house marketing muscle with certified trainers. We teach modern SEO algorithms, high-ROI paid ad strategies, and data-driven content creation so you can stop outsourcing and start owning your growth.</p>
+                <div class="pitch-box">
+                    <h4>Client Pitch Strategy</h4>
+                    <p><strong>The Hook:</strong> "Stop renting audiences from agencies; build your own growth engine."<br>
+                    <strong>The Value:</strong> Target Founders and Marketing VPs. Frame agency fees as a sunk cost, whereas training an internal team is a capital asset.</p>
+                </div>
+            </div>
+            <div class="tab-img">
+                <img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=600&q=80" alt="Digital Marketing Strategy">
+            </div>
+        </div>
+    </main>
+
+    <!-- Slide-out Help & Form Panel -->
+    <div class="help-overlay" id="helpOverlay" onclick="closeHelpPanel()"></div>
+    <div class="help-panel" id="helpPanel">
+        <button class="close-panel" onclick="closeHelpPanel()" title="Close">&times;</button>
+        
+        <div class="panel-content">
+            <!-- FAQ Section -->
+            <section class="faq-section">
+                <h2 class="section-title">Common Questions</h2>
+                <div class="faq-item">
+                    <div class="faq-question">Do I need coding experience for AI Mastery? <span>+</span></div>
+                    <div class="faq-answer"><p>Not at all. We focus on prompt engineering and using no-code/low-code tools to boost your daily workflow.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Can the LMS integrate with HR software? <span>+</span></div>
+                    <div class="faq-answer"><p>Yes, our Custom LMS supports API integrations with major HRIS platforms like Workday and BambooHR.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Are training sessions live or recorded? <span>+</span></div>
+                    <div class="faq-answer"><p>We offer a hybrid approach: pre-recorded foundations plus live, instructor-led practical workshops.</p></div>
+                </div>
+            </section>
+
+            <!-- Registration/Inquiry Form -->
+            <section class="form-section">
+                <h2 class="section-title">Join or Ask a Question</h2>
+                <!-- Every single input element below now requires user input to submit -->
+                <form class="enroll-form" id="orionForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" required placeholder="John">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" required placeholder="Doe">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email ID</label>
+                        <input type="email" id="email" required placeholder="john@example.com">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender" required>
+                                <option value="" disabled selected>Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                                <option value="prefer-not">Prefer not to say</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Current Status</label>
+                            <select id="status" required>
+                                <option value="" disabled selected>Select status</option>
+                                <option value="student">Student</option>
+                                <option value="working">Working Professional</option>
+                                <option value="business">Business Owner</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="qualification">Highest Qualification</label>
+                        <input type="text" id="qualification" required placeholder="e.g. B.Tech, MBA">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="feedback">How did you find our website?</label>
+                        <!-- 'required' added to feedback -->
+                        <textarea id="feedback" rows="2" placeholder="Let us know..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="doubts">Ask a Question / Project Doubts</label>
+                        <!-- 'required' added to doubts -->
+                        <textarea id="doubts" rows="3" placeholder="Drop your questions here..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Submit Inquiry</button>
+                </form>
+            </section>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="slogan">"Orion AI: Empowering Tomorrow's Workforce, Today."</div>
+        <div class="contact-info">
+            <p><strong>Address:</strong> 32B, Padma Street, Shanthi Nagar, VGN Shanthi Nagar, Ambattur, Chennai, Tamil Nadu 600058</p>
+            <p><strong>Phone:</strong> 9363197584 | 9025384508</p>
+            <p><strong>Email:</strong> info@orionai.co.in</p>
+        </div>
+        <p style="margin-top: 30px; font-size: 0.9rem; color: #7a869a;">&copy; 2026 Orion AI. All rights reserved.</p>
+    </footer>
+
+    <!-- Thank You Modal -->
+    <div class="modal" id="thankYouModal">
+        <div class="modal-content">
+            <h2>Thank You!</h2>
+            <p>Your details and queries have been successfully submitted. Our team at Orion AI will review your submission and get back to you shortly.</p>
+            <button class="close-modal" onclick="closeThankYouModal()">Close Window</button>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Tab Switching Logic
+        function openTab(evt, tabName) {
+            const tabContents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove("active");
+            }
+            const tabBtns = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < tabBtns.length; i++) {
+                tabBtns[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // Help Panel Logic
+        const helpOverlay = document.getElementById('helpOverlay');
+        const helpPanel = document.getElementById('helpPanel');
+
+        function openHelpPanel() {
+            helpOverlay.style.display = 'block';
+            setTimeout(() => {
+                helpOverlay.style.opacity = '1';
+                helpPanel.style.right = '0';
+            }, 10);
+        }
+
+        function closeHelpPanel() {
+            helpPanel.style.right = '-100%';
+            helpOverlay.style.opacity = '0';
+            setTimeout(() => {
+                helpOverlay.style.display = 'none';
+            }, 400); 
+        }
+
+        // FAQ Accordion Logic
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                item.classList.toggle('active');
+                const span = question.querySelector('span');
+                span.textContent = item.classList.contains('active') ? '-' : '+';
+            });
+        });
+
+        // Flying Stars Animation Generator
+        function triggerStars() {
+            const colors = ['#FFD700', '#64ffda', '#ffffff', '#ffeb3b', '#ff9800'];
+            
+            for (let i = 0; i < 40; i++) {
+                let star = document.createElement('div');
+                star.innerHTML = '★';
+                star.className = 'star-particle';
+                
+                // Start from center of screen
+                star.style.left = '50vw';
+                star.style.top = '50vh';
+
+                // Random directions and rotations
+                let tx = (Math.random() - 0.5) * 600 + 'px'; 
+                let ty = (Math.random() - 0.5) * 600 + 'px'; 
+                let rot = (Math.random() * 720) + 'deg'; 
+                
+                star.style.color = colors[Math.floor(Math.random() * colors.length)];
+                
+                star.style.setProperty('--tx', tx);
+                star.style.setProperty('--ty', ty);
+                star.style.setProperty('--rot', rot);
+                
+                // Randomize animation speed
+                star.style.animationDuration = (Math.random() * 1 + 1) + 's';
+
+                document.body.appendChild(star);
+
+                // Clean up DOM after animation
+                setTimeout(() => {
+                    star.remove();
+                }, 2000);
+            }
+        }
+
+        // Form Submission Logic
+        const form = document.getElementById('orionForm');
+        const thankYouModal = document.getElementById('thankYouModal');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            
+            closeHelpPanel();
+            
+            setTimeout(() => {
+                thankYouModal.style.display = 'flex';
+                triggerStars(); // Trigger the stars animation here
+                form.reset();
+            }, 400);
+        });
+
+        function closeThankYouModal() {
+            thankYouModal.style.display = 'none';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            if (event.target == thankYouModal) {
+                thankYouModal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
