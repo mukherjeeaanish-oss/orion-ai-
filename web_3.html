@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orion AI - Corporate Intelligence Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-primary: #0a0f1d;
+            --bg-secondary: #131c33;
+            --bg-glass: rgba(19, 28, 51, 0.75);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-glow: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            
+            /* Domain Distinct Colors */
+            --clr-social: #ff4757;
+            --clr-solutions: #2e37fe;
+            --clr-chatbots: #00d2d3;
+            --clr-whatsapp: #2ed573;
+            --clr-hr: #ffa502;
+            --clr-compliance: #9b5de5;
+            --clr-analytics: #00f2fe;
+            --clr-training: #ff6b81;
+            --clr-outsourcing: #10ac84;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 80% 20%, rgba(79, 172, 254, 0.15) 0%, transparent 50%),
+                              radial-gradient(circle at 20% 80%, rgba(0, 242, 254, 0.1) 0%, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* --- HEADER NAVIGATION --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-left, .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .menu-btn, .help-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s, transform 0.2s;
+        }
+
+        .menu-btn:hover, .help-btn:hover {
+            color: #00f2fe;
+            transform: scale(1.1);
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: var(--accent-glow);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        /* --- SLIDING SIDEBAR (TABLE OF CONTENTS) --- */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 320px;
+            height: 100%;
+            background: var(--bg-secondary);
+            z-index: 200;
+            transition: left 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+            padding: 30px 20px;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+
+        .toc-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .toc-item a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: var(--text-main);
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .toc-item a:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
+        }
+
+        /* Dynamic Border Colors for TOC */
+        .toc-social a { border-left-color: var(--clr-social); }
+        .toc-solutions a { border-left-color: var(--clr-solutions); }
+        .toc-chatbots a { border-left-color: var(--clr-chatbots); }
+        .toc-whatsapp a { border-left-color: var(--clr-whatsapp); }
+        .toc-hr a { border-left-color: var(--clr-hr); }
+        .toc-compliance a { border-left-color: var(--clr-compliance); }
+        .toc-analytics a { border-left-color: var(--clr-analytics); }
+        .toc-training a { border-left-color: var(--clr-training); }
+        .toc-outsourcing a { border-left-color: var(--clr-outsourcing); }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 150;
+            display: none;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* --- HERO BANNER --- */
+        .hero-banner {
+            margin-top: 70px;
+            height: 350px;
+            background: linear-gradient(rgba(10, 15, 29, 0.7), rgba(10, 15, 29, 0.95)), 
+                        url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1920&auto=format&fit=crop') center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero-banner h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: var(--accent-glow);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-banner p {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            max-width: 600px;
+        }
+
+        /* --- MAIN CONTENT & TAB SYSTEM --- */
+        .main-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .tabs-menu {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 20px;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-btn.active {
+            color: #0a0f1d;
+            font-weight: 600;
+        }
+
+        /* Tab Active States Colors matching TOC */
+        .tab-btn[data-tab="social"].active { background: var(--clr-social); }
+        .tab-btn[data-tab="solutions"].active { background: var(--clr-solutions); color: white;}
+        .tab-btn[data-tab="chatbots"].active { background: var(--clr-chatbots); }
+        .tab-btn[data-tab="whatsapp"].active { background: var(--clr-whatsapp); }
+        .tab-btn[data-tab="hr"].active { background: var(--clr-hr); }
+        .tab-btn[data-tab="compliance"].active { background: var(--clr-compliance); color: white;}
+        .tab-btn[data-tab="analytics"].active { background: var(--clr-analytics); }
+        .tab-btn[data-tab="training"].active { background: var(--clr-training); }
+        .tab-btn[data-tab="outsourcing"].active { background: var(--clr-outsourcing); }
+
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .pitch-card {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        @media (max-width: 768px) {
+            .pitch-card { grid-template-columns: 1fr; }
+        }
+
+        .pitch-info {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .pitch-tag {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            color: #00f2fe;
+        }
+
+        .pitch-info h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .pitch-info p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .pitch-img {
+            background-size: center;
+            background-position: center;
+            min-height: 300px;
+        }
+
+        .enquire-btn {
+            align-self: flex-start;
+            background: var(--accent-glow);
+            color: #0a0f1d;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .enquire-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.4);
+        }
+
+        /* --- INTERACTIVE MODAL (RIGHT ICON & ENQUIRE TRIGGER) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(5, 8, 16, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 300;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-wrapper {
+            background: var(--bg-secondary);
+            width: 90%;
+            max-width: 850px;
+            height: 85vh;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            overflow: hidden;
+            transform: scale(0.9);
+            transition: transform 0.4s ease;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        @media (max-width: 768px) {
+            .modal-wrapper { grid-template-columns: 1fr; }
+        }
+
+        .modal-overlay.active .modal-wrapper {
+            transform: scale(1);
+        }
+
+        .modal-side-form {
+            padding: 30px;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            overflow-y: auto;
+        }
+
+        .modal-side-faq {
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.15);
+            overflow-y: auto;
+        }
+
+        .modal-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #00f2fe;
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .form-control {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 10px 14px;
+            border-radius: 6px;
+            color: var(--text-main);
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #00f2fe;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 5px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--accent-glow);
+            color: #0a0f1d;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: opacity 0.3s;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* FAQ Accordion Styling */
+        .accordion-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            padding: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .accordion-header:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0, 1, 0, 1), padding 0.3s ease;
+            background: rgba(0,0,0,0.1);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        .accordion-item.open .accordion-content {
+            max-height: 200px; /* arbitrary large enough height */
+            padding: 14px;
+            transition: max-height 0.3s cubic-bezier(1, 0, 1, 0), padding 0.3s ease;
+        }
+
+        .accordion-header i {
+            transition: transform 0.3s;
+        }
+
+        .accordion-item.open .accordion-header i {
+            transform: rotate(180deg);
+        }
+
+        /* Interactive Dynamic Q&A Panel */
+        .user-questions-list {
+            margin-top: 15px;
+            max-height: 150px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .user-question-box {
+            background: rgba(0, 242, 254, 0.05);
+            border-left: 3px solid #00f2fe;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        /* --- MAINTENANCE VIEW OVERLAY --- */
+        .maintenance-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg-primary);
+            z-index: 500;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .maintenance-screen.active {
+            display: flex;
+        }
+
+        .m-box {
+            max-width: 500px;
+            background: var(--bg-secondary);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .robot-img {
+            width: 180px;
+            height: 180px;
+            margin-bottom: 25px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255,255,255,0.1);
+        }
+
+        .m-box h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #ff6b81;
+        }
+
+        .m-box p {
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .back-btn {
+            background: var(--accent-glow);
+            color: #0a0f1d;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* --- FOOTER CONTENT --- */
+        footer {
+            background: #060a14;
+            padding: 60px 20px 20px 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 80px;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+
+        .footer-brand h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            background: var(--accent-glow);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .slogan {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            max-width: 500px;
+            line-height: 1.6;
+        }
+
+        .footer-contact h4 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: #00f2fe;
+        }
+
+        .contact-details {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .contact-details i {
+            color: #00f2fe;
+            margin-right: 10px;
+            width: 16px;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <button class="menu-btn" id="openSidebar" aria-label="Open Table of Contents">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="logo">ORION AI</div>
+        </div>
+        <div class="header-right">
+            <button class="help-btn" id="openModal" aria-label="Support and Inquiries">
+                <i class="fas fa-question-circle"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Table of Contents</h3>
+            <button class="close-btn" id="closeSidebar"><i class="fas fa-times"></i></button>
+        </div>
+        <ul class="toc-list">
+            <li class="toc-item toc-social"><a href="#" class="maintenance-trigger"><i class="fas fa-hashtag"></i> Social Media Services</a></li>
+            <li class="toc-item toc-solutions"><a href="#" class="maintenance-trigger"><i class="fas fa-brain"></i> AI Solutions</a></li>
+            <li class="toc-item toc-chatbots"><a href="#" class="maintenance-trigger"><i class="fas fa-comments"></i> AI Chatbots</a></li>
+            <li class="toc-item toc-whatsapp"><a href="#" class="maintenance-trigger"><i class="fas fa-phone-alt"></i> WhatsApp Business API</a></li>
+            <li class="toc-item toc-hr"><a href="#" class="maintenance-trigger"><i class="fas fa-users-cog"></i> HR Payroll & Management</a></li>
+            <li class="toc-item toc-compliance"><a href="#" class="maintenance-trigger"><i class="fas fa-shield-alt"></i> Compliance & Regulatory</a></li>
+            <li class="toc-item toc-analytics"><a href="#" class="maintenance-trigger"><i class="fas fa-chart-pie"></i> Data Analytics & Intel</a></li>
+            <li class="toc-item toc-training"><a href="#" class="maintenance-trigger"><i class="fas fa-graduation-cap"></i> Training & Upskilling</a></li>
+            <li class="toc-item toc-outsourcing"><a href="#" class="maintenance-trigger"><i class="fas fa-handshake"></i> Outsourcing & Partners</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero-banner">
+        <h1>Next-Gen B2B AI Architectures</h1>
+        <p>Empowering global enterprises with cognitive automation, robust digital strategies, and regulatory compliant pipelines.</p>
+    </section>
+
+    <main class="main-container">
+        <div class="tabs-menu">
+            <button class="tab-btn active" data-tab="social">Social Media</button>
+            <button class="tab-btn" data-tab="solutions">AI Solutions</button>
+            <button class="tab-btn" data-tab="chatbots">AI Chatbots</button>
+            <button class="tab-btn" data-tab="whatsapp">WhatsApp API</button>
+            <button class="tab-btn" data-tab="hr">HR & Payroll</button>
+            <button class="tab-btn" data-tab="compliance">Compliance</button>
+            <button class="tab-btn" data-tab="analytics">Analytics & Intel</button>
+            <button class="tab-btn" data-tab="training">Upskilling</button>
+            <button class="tab-btn" data-tab="outsourcing">Outsourcing</button>
+        </div>
+
+        <div class="tab-content active" id="social">
+            <div class="pitch-card">
+                <div class="pitch-info">
+                    <span class="pitch-tag">Amplified Digital Presence</span>
+                    <h2>Social Media Services</h2>
+                    <p>Orion AI revolutionizes brand positioning using hyper-targeted audience modeling and algorithmic trend forecasting. We deploy deep-learning structures to synthesize operational multi-channel campaigns, predictive engagement pipelines, and end-to-end performance tracking frameworks engineered to optimize customer lifetime value metrics.</p>
+                    <button class="enquire-btn trigger-enquiry">Enquire Now <i class="fas fa-arrow-right"></i></button>
+                </div>
+                <div class="pitch-img" style="background-image: url('https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=600&auto=format&fit=crop');"></div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="solutions">
+            <div class="pitch-card">
+                <div class="pitch-info">
+                    <span class="pitch-tag">Core Architecture Evolution</span>
+                    <h2>AI Solutions</h2>
+                    <p>Integrate robust, custom-trained large language models, computer vision capabilities, and cognitive optimization layers directly into your proprietary enterprise tech stack. Our architectures specialize in breaking down complex structural silos, mitigating processing overheads, and scaling workflows exponentially.</p>
+                    <button class="enquire-btn trigger-enquiry">Enquire Now <i class="fas fa-arrow-right"></i></button>
+                </div>
+                <div class="pitch-img" style="background-image: url('https://images.unsplash.com/photo-1677442136019-21780efad99a?q=80&w=600&auto=format&fit=crop');"></div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="chatbots">
+            <div class="pitch-card">
+                <div class="pitch-info">
+                    <span class="pitch-tag">Conversational Excellence</span>
+                    <h2>AI Chatbots</h2>
+                    <p>Deploy persistent, high-fidelity conversational agents capable of resolving complex user workflows natively in over 40 languages. Operating with human-like contextual comprehension, our systems seamlessly transition between complex database mutations and empathetic customer resolution touchpoints 24/7.</p>
+                    <button class="enquire-btn trigger-enquiry">Enquire Now <i class="fas fa-arrow-right"></i></button>
+                </div>
+                <div class="pitch-img" style="background-image: url('https://images.unsplash.com/photo-1531746790731-6c087fecd65a?q=80&w=600&auto=format&fit=crop');"></div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="whatsapp">
+            <div class="pitch-card">
+                <div class="pitch-info">
+                    <span class="pitch-tag">Direct Consumer Pipelines</span>
+                    <h2>WhatsApp Business API</h2>
+                    <p>Bridge the transactional gap with official Meta infrastructure integrations. Orion AI designs scalable marketing automation frameworks, immediate transactional alert systems, and unified e-commerce conversational layers that reside comfortably within your target consumers' preferred chat ecosystem.</p>
+                    <button class="enquire-btn trigger-enquiry">Enquire Now <i class="fas fa-arrow-right"></i></button>
+                </div>
+                <div class="pitch-img" style="background-image: url('https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?q=80&w=600&auto=format&fit=crop');"></div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="hr">
+            <div class="pitch-card">
+                <div class="pitch-info">
+                    <span class="pitch-tag">Resource Optimization</span>
+                    <h2>HR Payroll & Management</h2>
+                    <p>Eliminate human error from structural administrative pipelines. Our autonomous HR modules comprehensively orchestrate end-to-end payroll dispatching, compliance tracking, and cognitive candidate ranking matrices that identify optimal ecosystem retention profiles effortlessly.</p>
+                    <button class="enquire-btn trigger-enquiry">Enquire Now <i class="fas fa-arrow-right"></i></button>
+                </div>
+                <div class="pitch-img" style="background-image: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=600&auto=format&fit=crop');"></div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="compliance">
+            <div class="pitch-card">
+                <div class="pitch-info">
+                    <span class="pitch-tag">Risk & Asset Protection</span>
+                    <h2>Compliance & Regulatory</h2>
+                    <p>Mitigate international compliance and data-handling liabilities automatically. Orion AI establishes algorithmic auditing filters tracking dynamic local updates, GDPR, HIPAA patterns, and instant threat evaluations to proactively safeguard legal parameters.</p>
+                    <button class="enquire-btn trigger-enquiry">Enquire Now <i class="fas fa-arrow-right"></i></button>
+                </div>
+                <div class="pitch-img" style="background-image: url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=600&auto=format&fit=crop');"></div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="analytics">
+            <div class="pitch-card">
+                <div class="pitch-info">
+                    <span class="pitch-tag">Executive Clarification</span>
+                    <h2>Data Analytics & Intelligence</h2>
+                    <p>Convert raw transaction telemetry into precise tactical projections. Our intelligence layers analyze unstructured relational graphs to output natural language summaries, cross-market visualizations, and dynamic real-time dashboard analytics.</p>
+                    <button class="enquire-btn trigger-enquiry">Enquire Now <i class="fas fa-arrow-right"></i></button>
+                </div>
+                <div class="pitch-img" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop');"></div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="training">
+            <div class="pitch-card">
+                <div class="pitch-info">
+                    <span class="pitch-tag">Workforce Future-Proofing</span>
+                    <h2>Training & Upskilling</h2>
+                    <p>Bridge internal human technical limitations through hyper-focused cognitive curriculums. We introduce personalized instructional pipelines tracking developer metrics, prompt engineering, basic data principles, and custom adaptive feedback environments.</p>
+                    <button class="enquire-btn trigger-enquiry">Enquire Now <i class="fas fa-arrow-right"></i></button>
+                </div>
+                <div class="pitch-img" style="background-image: url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=600&auto=format&fit=crop');"></div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="outsourcing">
+            <div class="pitch-card">
+                <div class="pitch-info">
+                    <span class="pitch-tag">Global Development Alliances</span>
+                    <h2>Outsourcing & Partnerships</h2>
+                    <p>Deploy specialized agile engineering cells trained specifically to integrate with your ongoing production targets. Our co-development workflows offer accelerated project velocities while ensuring elite quality control architectures remain pristine throughout implementation.</p>
+                    <button class="enquire-btn trigger-enquiry">Enquire Now <i class="fas fa-arrow-right"></i></button>
+                </div>
+                <div class="pitch-img" style="background-image: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=600&auto=format&fit=crop');"></div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="mainModal">
+        <button class="close-modal-btn" id="closeModal" aria-label="Close panel"><i class="fas fa-times"></i></button>
+        <div class="modal-wrapper">
+            
+            <div class="modal-side-form">
+                <div class="modal-title"><i class="fas fa-user-shield"></i> Profile Registration</div>
+                <form id="enquiryForm" onsubmit="handleFormSubmit(event)">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                        <div class="form-group">
+                            <label for="fName">First Name *</label>
+                            <input type="text" id="fName" class="form-control" required placeholder="John">
+                        </div>
+                        <div class="form-group">
+                            <label for="lName">Last Name *</label>
+                            <input type="text" id="lName" class="form-control" required placeholder="Doe">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Corporate Email ID *</label>
+                        <input type="email" id="email" class="form-control" required placeholder="john.doe@company.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="qualification">Highest Qualification *</label>
+                        <input type="text" id="qualification" class="form-control" required placeholder="B.Tech Computer Science / MBA">
+                    </div>
+                    <div class="form-group">
+                        <label>Current Professional Status *</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="status" value="Working" required> Working Professional
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="status" value="Student"> Active Student
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="feedback">Ecosystem & UX Feedback *</label>
+                        <textarea id="feedback" class="form-control" rows="3" required placeholder="Share your structural assessment of our solutions and platform..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Transmit Information</button>
+                </form>
+            </div>
+
+            <div class="modal-side-faq">
+                <div class="modal-title"><i class="fas fa-brain"></i> Knowledge Hub</div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">What determines Orion AI pipeline pricing? <i class="fas fa-chevron-down"></i></div>
+                    <div class="accordion-content">Our deployment configurations scale natively based on model parameter selections, infrastructure token throughputs, and real-time computation node requirements.</div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">Is current system historical data safe? <i class="fas fa-chevron-down"></i></div>
+                    <div class="accordion-content">Absolutely. Orion AI sets up fully sandboxed vector databases utilizing enterprise-tier AES-256 state encryption protocols ensuring complete tenant isolation.</div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">How fast is enterprise deployment? <i class="fas fa-chevron-down"></i></div>
+                    <div class="accordion-content">Standard baseline API hooks deploy across existing environments inside 14 operational days, while custom models undergo extended pipeline testing.</div>
+                </div>
+
+                <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                    <div class="modal-title" style="font-size:1.1rem;"><i class="fas fa-question"></i> Project Queries</div>
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" id="userDoubtInput" class="form-control" placeholder="Ask specific architectural doubt...">
+                        <button type="button" class="back-btn" style="padding:0 15px;" onclick="submitDoubt()"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                    <div class="user-questions-list" id="doubtsLog">
+                        </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="maintenance-screen" id="maintenanceScreen">
+        <div class="m-box">
+            <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=400&auto=format&fit=crop" alt="Downcast System Engineering Drone" class="robot-img">
+            <h2>System Segment Offline</h2>
+            <p>Our autonomous engineering components are currently executing core server maintenance operations and structural calibrations on this hyperlinked module domain.</p>
+            <button class="back-btn" onclick="closeMaintenance()"><i class="fas fa-undo"></i> Return to Command Center</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3>ORION AI</h3>
+                <p class="slogan">"Orchestrating the Intelligence of Tomorrow, Today."</p>
+                <p>Architecting production-ready enterprise intelligence systems, cloud integrations, and robust automated models for the modern commercial frontier.</p>
+            </div>
+            <div class="footer-contact">
+                <h4>Corporate Headquarters</h4>
+                <ul class="contact-details">
+                    <li><i class="fas fa-map-marker-alt"></i> 32B, Padma Street, Shanthi Nagar, VGN Shanthi Nagar, Ambattur, Chennai, Tamil Nadu 600058</li>
+                    <li><i class="fas fa-phone"></i> 9363197584 | 9025384508</li>
+                    <li><i class="fas fa-envelope"></i> info@orionai.co.in</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Orion AI Systems Private Ltd. All structural rights reserved.</p>
+            <p>Status: System Core Fully Functional</p>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const mainModal = document.getElementById('mainModal');
+        const maintenanceScreen = document.getElementById('maintenanceScreen');
+
+        // --- SIDEBAR SLIDING TOC SYSTEM ---
+        document.getElementById('openSidebar').addEventListener('click', () => {
+            sidebar.classList.add('active');
+            sidebarOverlay.classList.add('active');
+        });
+
+        const closeSidebarFunc = () => {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+        };
+        document.getElementById('closeSidebar').addEventListener('click', closeSidebarFunc);
+        sidebarOverlay.addEventListener('click', closeSidebarFunc);
+
+        // --- INTERACTIVE TABS TRANSLATION SYSTEM ---
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTab = button.getAttribute('data-tab');
+
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    content.style.display = 'none';
+                });
+
+                button.classList.add('active');
+                const activeContent = document.getElementById(targetTab);
+                activeContent.style.display = 'block';
+                // Small timeout to allow display block initialization before firing transition effects
+                setTimeout(() => {
+                    activeContent.classList.add('active');
+                }, 20);
+            });
+        });
+
+        // --- MODAL UTILITY ENGINE (? Icon & Enquire Now triggers) ---
+        const openModalFunc = () => {
+            mainModal.classList.add('active');
+        };
+        const closeModalFunc = () => {
+            mainModal.classList.remove('active');
+        };
+
+        document.getElementById('openModal').addEventListener('click', openModalFunc);
+        document.getElementById('closeModal').addEventListener('click', closeModalFunc);
+        
+        // Connect all Enquire buttons smoothly to the central modal
+        document.querySelectorAll('.trigger-enquiry').forEach(btn => {
+            btn.addEventListener('click', openModalFunc);
+        });
+
+        // Close modal if user clicks outside the content window background
+        mainModal.addEventListener('click', (e) => {
+            if(e.target === mainModal) closeModalFunc();
+        });
+
+        // --- FAQ INTERACTIVE ACCORDION DROP-DOWN LOGIC ---
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const parent = header.parentElement;
+                const isOpen = parent.classList.contains('open');
+                
+                // Close other opened panels for layout clean preservation
+                document.querySelectorAll('.accordion-item').forEach(item => item.classList.remove('open'));
+                
+                if(!isOpen) {
+                    parent.classList.add('open');
+                }
+            });
+        });
+
+        // --- DYNAMIC LIVE Q&A QUERY LOG ---
+        function submitDoubt() {
+            const queryField = document.getElementById('userDoubtInput');
+            const logBox = document.getElementById('doubtsLog');
+            
+            if(queryField.value.trim() === "") return;
+
+            const newQuery = document.createElement('div');
+            newQuery.className = 'user-question-box';
+            newQuery.innerHTML = `<strong>Query:</strong> ${queryField.value}`;
+            
+            logBox.prepend(newQuery);
+            queryField.value = "";
+        }
+
+        // --- MANDATED FORM SUBMISSION & SUCCESS HANDLING ---
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            const clientName = document.getElementById('fName').value;
+            
+            // Re-render modal space into an engaging Thank You landing screen
+            const wrapper = document.querySelector('.modal-wrapper');
+            wrapper.innerHTML = `
+                <div style="grid-column: span 2; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:50px;">
+                    <i class="fas fa-check-circle" style="font-size: 4.5rem; color:#00f2fe; margin-bottom:20px; text-shadow: 0 0 15px rgba(0,242,254,0.4);"></i>
+                    <h2 style="font-size:2.5rem; margin-bottom:15px; background: var(--accent-glow); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Information Transmitted</h2>
+                    <p style="color:var(--text-muted); max-width:550px; line-height:1.7; margin-bottom:25px;">
+                        Thank you, <strong>${clientName}</strong>. Your structural parameters, professional configuration profile, and software framework feedback have been appended securely to Orion AI pipelines.
+                    </p>
+                    <div style="font-style: italic; font-size:1.1rem; color:var(--text-main); margin-bottom:30px;">"Orchestrating the Intelligence of Tomorrow, Today."</div>
+                    <button class="back-btn" onclick="location.reload()">Terminate Session</button>
+                </div>
+            `;
+        }
+
+        // --- UNDER MAINTENANCE LAYER LINK INTERCEPTION ---
+        document.querySelectorAll('.maintenance-trigger').forEach(trigger => {
+            trigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                closeSidebarFunc();
+                maintenanceScreen.classList.add('active');
+            });
+        });
+
+        function closeMaintenance() {
+            maintenanceScreen.classList.remove('active');
+        }
+    </script>
+</body>
+</html>
